@@ -28,7 +28,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div className="h-16">
+    <div className="bg-[url('/images/backgraound.png')] bg-cover bg-center h-screen">
       <nav className="fixed top-0 left-0 w-full h-16 bg-white shadow-md z-50">
         <div className="flex justify-between items-center h-full px-4 md:px-10 lg:px-20">
 
