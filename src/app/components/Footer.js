@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { Sparkles, Phone, MapPin, Clock, ExternalLink } from "lucide-react";
 
@@ -111,7 +112,7 @@ export default function Footer() {
                   (e.currentTarget.style.background = "rgba(255,255,255,0.08)")
                 }
               >
-                <Instagram size={18} color="white" />
+                <ExternalLink size={18} color="white" />
               </a>
               {/* WhatsApp */}
               <a
