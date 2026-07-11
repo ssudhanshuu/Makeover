@@ -1,11 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, IndianRupee, Sparkles } from "lucide-react";
 
 const tabs = ["Makeup", "Skin Care", "Hair Care", "Nail Art", "Lehenga Rental", "Jewelry Rental"];
 
-const services = {
+const defaultServices = {
   Makeup: [
     { name: "Traditional Bridal Makeup", price: 8000, desc: "Classic Indian bridal look with premium Kryolan & MAC products" },
     { name: "Creative Bridal Makeup", price: 12000, desc: "Contemporary HD glam with contouring, cut-crease & custom palette" },
@@ -88,11 +88,60 @@ const tabIcons = {
 
 export default function Services() {
   const [activeTab, setActiveTab] = useState("Makeup");
+  const [services, setServices] = useState(defaultServices);
+
+  useEffect(() => {
+    async function loadServices() {
+      try {
+        const res = await fetch("/api/services");
+        const json = await res.json();
+        if (json.success && json.data && json.data.length > 0) {
+          // Initialize empty categories
+          const grouped = {
+            Makeup: [],
+            "Skin Care": [],
+            "Hair Care": [],
+            "Nail Art": [],
+            "Lehenga Rental": [],
+            "Jewelry Rental": [],
+          };
+          
+          json.data.forEach((service) => {
+            const cat = service.category;
+            if (grouped[cat]) {
+              grouped[cat].push({
+                name: service.name,
+                price: service.price,
+                desc: service.desc,
+                unit: service.unit,
+              });
+            } else {
+              // Add support for new custom categories added by admin
+              if (!grouped[cat]) {
+                grouped[cat] = [];
+              }
+              grouped[cat].push({
+                name: service.name,
+                price: service.price,
+                desc: service.desc,
+                unit: service.unit,
+              });
+            }
+          });
+          setServices(grouped);
+        }
+      } catch (err) {
+        console.error("Failed to load services from database, using fallback defaults.", err);
+      }
+    }
+    loadServices();
+  }, []);
 
   const handleBook = () => {
     const el = document.querySelector("#booking");
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
+
 
   return (
     <section id="services" className="section-pad bg-gradient-to-b from-white to-[#fdf8f5]">
@@ -151,66 +200,72 @@ export default function Services() {
               transition={{ duration: 0.3 }}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
             >
-              {services[activeTab].map((service, i) => (
-                <motion.div
-                  key={service.name}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.35, delay: i * 0.05 }}
-                  className="card p-6 flex flex-col justify-between hover:border-pink-300 hover:shadow-pink-100/50 hover:shadow-lg transition-all"
-                  style={{ minHeight: "200px" }}
-                >
-                  <div>
-                    <div className="flex justify-between items-start mb-2">
-                      <h3
-                        className="font-bold text-base leading-snug flex-1 pr-2"
-                        style={{ color: "var(--text)" }}
-                      >
-                        {service.name}
-                      </h3>
-                      <Sparkles size={14} className="text-yellow-500 shrink-0 mt-0.5" />
-                    </div>
-                    <p className="text-xs text-gray-500 line-clamp-2 mb-4">
-                      {service.desc}
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <div className="flex items-center gap-1 mb-4">
-                      <IndianRupee
-                        size={15}
-                        style={{ color: "var(--primary)" }}
-                      />
-                      <span
-                        className="text-2xl font-black tracking-tight"
-                        style={{ color: "var(--primary)" }}
-                      >
-                        {service.price.toLocaleString("en-IN")}
-                      </span>
-                      {service.unit && (
-                        <span
-                          className="text-xs font-semibold"
-                          style={{ color: "var(--text-muted)" }}
+              {(!services[activeTab] || services[activeTab].length === 0) ? (
+                <div className="col-span-full py-16 text-center text-slate-500 text-sm">
+                  No services listed in this category yet.
+                </div>
+              ) : (
+                services[activeTab].map((service, i) => (
+                  <motion.div
+                    key={service.name}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.35, delay: i * 0.05 }}
+                    className="card p-6 flex flex-col justify-between hover:border-pink-300 hover:shadow-pink-100/50 hover:shadow-lg transition-all"
+                    style={{ minHeight: "200px" }}
+                  >
+                    <div>
+                      <div className="flex justify-between items-start mb-2">
+                        <h3
+                          className="font-bold text-base leading-snug flex-1 pr-2"
+                          style={{ color: "var(--text)" }}
                         >
-                          {service.unit}
-                        </span>
-                      )}
+                          {service.name}
+                        </h3>
+                        <Sparkles size={14} className="text-yellow-500 shrink-0 mt-0.5" />
+                      </div>
+                      <p className="text-xs text-gray-500 line-clamp-2 mb-4">
+                        {service.desc}
+                      </p>
                     </div>
+                    
+                    <div>
+                      <div className="flex items-center gap-1 mb-4">
+                        <IndianRupee
+                          size={15}
+                          style={{ color: "var(--primary)" }}
+                        />
+                        <span
+                          className="text-2xl font-black tracking-tight"
+                          style={{ color: "var(--primary)" }}
+                        >
+                          {service.price.toLocaleString("en-IN")}
+                        </span>
+                        {service.unit && (
+                          <span
+                            className="text-xs font-semibold"
+                            style={{ color: "var(--text-muted)" }}
+                          >
+                            {service.unit}
+                          </span>
+                        )}
+                      </div>
 
-                    <button
-                      onClick={handleBook}
-                      className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl border text-xs font-bold transition-all hover:bg-pink-600 hover:text-white hover:border-pink-600 group"
-                      style={{
-                        borderColor: "var(--primary)",
-                        color: "var(--primary)",
-                      }}
-                    >
-                      <Calendar size={13} />
-                      Book Service
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
+                      <button
+                        onClick={handleBook}
+                        className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl border text-xs font-bold transition-all hover:bg-pink-600 hover:text-white hover:border-pink-600 group"
+                        style={{
+                          borderColor: "var(--primary)",
+                          color: "var(--primary)",
+                        }}
+                      >
+                        <Calendar size={13} />
+                        Book Service
+                      </button>
+                    </div>
+                  </motion.div>
+                ))
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
