@@ -220,11 +220,10 @@ export default function AdminDashboard() {
       {/* Toast Alert */}
       {toast.show && (
         <div
-          className={`fixed top-5 right-5 z-50 flex items-center gap-2.5 px-6 py-4 rounded-2xl shadow-xl transition-all transform translate-y-0 duration-300 ${
-            toast.type === "success"
-              ? "bg-emerald-600 text-white"
-              : "bg-rose-600 text-white"
-          }`}
+          className={`fixed top-5 right-5 z-50 flex items-center gap-2.5 px-6 py-4 rounded-2xl shadow-xl transition-all transform translate-y-0 duration-300 ${toast.type === "success"
+            ? "bg-emerald-600 text-white"
+            : "bg-rose-600 text-white"
+            }`}
         >
           <Sparkles size={18} />
           <span className="font-semibold text-sm">{toast.message}</span>
@@ -237,7 +236,7 @@ export default function AdminDashboard() {
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="flex items-center justify-center w-10 h-10 rounded-full border border-pink-100 bg-pink-50/50 hover:bg-pink-100 text-pink-700 transition"
+              className="flex items-center justify-center w-10 h-10  border border-pink-100 bg-pink-50/50 hover:bg-pink-100 text-pink-700 transition"
               title="Back to Home"
             >
               <ArrowLeft size={18} />
@@ -247,7 +246,7 @@ export default function AdminDashboard() {
                 <span className="bg-gradient-to-r from-pink-600 to-rose-600 text-transparent bg-clip-text font-serif">
                   Ruchi Makeover
                 </span>
-                <span className="text-xs bg-pink-100 text-pink-700 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
+                <span className="text-xs bg-pink-100 text-pink-700 px-2.5 py-1  font-bold uppercase tracking-wider">
                   Admin Panel
                 </span>
               </h1>
@@ -258,14 +257,14 @@ export default function AdminDashboard() {
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-pink-600 transition border border-slate-200 px-4 py-2.5 rounded-full bg-white shadow-xs"
+              className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-pink-600 transition border border-slate-200 px-4 py-2.5  bg-white shadow-xs"
             >
               <Home size={14} />
               View Site
             </Link>
             <button
               onClick={handleOpenAdd}
-              className="flex items-center gap-2 text-xs font-bold bg-pink-700 hover:bg-pink-800 text-white shadow-md shadow-pink-200/50 hover:shadow-pink-300/50 px-5 py-2.5 rounded-full transition cursor-pointer"
+              className="flex items-center gap-2 text-xs font-bold bg-pink-700 hover:bg-pink-800 text-white shadow-md shadow-pink-200/50 hover:shadow-pink-300/50 px-5 py-2.5  transition cursor-pointer"
             >
               <Plus size={15} />
               Add Service
@@ -359,11 +358,10 @@ export default function AdminDashboard() {
             <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-thin">
               <button
                 onClick={() => setSelectedCategory("All")}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition whitespace-nowrap cursor-pointer ${
-                  selectedCategory === "All"
-                    ? "bg-slate-900 text-white"
-                    : "bg-slate-100 hover:bg-slate-200 text-slate-700"
-                }`}
+                className={`px-4 py-2  text-xs font-bold transition whitespace-nowrap cursor-pointer ${selectedCategory === "All"
+                  ? "bg-slate-900 text-white"
+                  : "bg-slate-100 hover:bg-slate-200 text-slate-700"
+                  }`}
               >
                 All categories
               </button>
@@ -371,11 +369,10 @@ export default function AdminDashboard() {
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold transition whitespace-nowrap cursor-pointer ${
-                    selectedCategory === cat
-                      ? "bg-pink-700 text-white"
-                      : "bg-slate-100 hover:bg-pink-50 hover:text-pink-700 text-slate-700"
-                  }`}
+                  className={`px-4 py-2  text-xs font-bold transition whitespace-nowrap cursor-pointer ${selectedCategory === cat
+                    ? "bg-pink-700 text-white"
+                    : "bg-slate-100 hover:bg-pink-50 hover:text-pink-700 text-slate-700"
+                    }`}
                 >
                   {cat}
                 </button>
@@ -388,12 +385,12 @@ export default function AdminDashboard() {
         <section className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-24 text-slate-400 gap-3">
-              <div className="w-10 h-10 border-4 border-pink-200 border-t-pink-700 rounded-full animate-spin"></div>
+              <div className="w-10 h-10 border-4 border-pink-200 border-t-pink-700  animate-spin"></div>
               <span className="text-sm font-semibold">Loading salon database...</span>
             </div>
           ) : filteredServices.length === 0 ? (
             <div className="text-center py-20 px-4">
-              <div className="w-16 h-16 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400 mb-4">
+              <div className="w-16 h-16 bg-slate-50 border border-slate-100  flex items-center justify-center mx-auto text-slate-400 mb-4">
                 <Search size={24} />
               </div>
               <h3 className="font-bold text-slate-800 text-lg">No services found</h3>
@@ -424,8 +421,8 @@ export default function AdminDashboard() {
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-pink-50 text-pink-700">
-                          <span className="w-1.5 h-1.5 rounded-full bg-pink-500"></span>
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1  text-xs font-bold bg-pink-50 text-pink-700">
+                          <span className="w-1.5 h-1.5  bg-pink-500"></span>
                           {service.category}
                         </span>
                       </td>
@@ -477,7 +474,7 @@ export default function AdminDashboard() {
               </h3>
               <button
                 onClick={() => setModalOpen(false)}
-                className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition"
+                className="p-1.5  hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition"
               >
                 <X size={18} />
               </button>
@@ -591,7 +588,7 @@ export default function AdminDashboard() {
                   className="px-6 py-2.5 rounded-xl bg-pink-700 hover:bg-pink-800 text-white text-xs font-bold shadow-md shadow-pink-200/50 hover:shadow-pink-300/50 transition flex items-center gap-1.5 disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {submitting && (
-                    <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <div className="w-3 h-3 border-2 border-white/30 border-t-white  animate-spin"></div>
                   )}
                   {modalType === "add" ? "Create Service" : "Save Changes"}
                 </button>

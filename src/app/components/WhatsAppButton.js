@@ -35,7 +35,7 @@ export default function WhatsAppButton() {
         whileTap={{ scale: 0.92 }}
         onMouseEnter={() => setShowTip(true)}
         onMouseLeave={() => setShowTip(false)}
-        className="wp-pulse w-14 h-14 rounded-full flex items-center justify-center shadow-xl"
+        className="wp-pulse w-14 h-14  flex items-center justify-center shadow-xl"
         style={{ background: "#25D366" }}
       >
         <MessageCircle size={26} color="white" fill="white" />

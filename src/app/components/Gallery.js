@@ -124,9 +124,8 @@ export default function Gallery() {
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`px-7 py-2.5 rounded-full border text-sm font-semibold transition-all ${
-                tab === t ? "tab-active" : "border-pink-100 hover:border-pink-300 bg-white"
-              }`}
+              className={`px-7 py-2.5  border text-sm font-semibold transition-all ${tab === t ? "tab-active" : "border-pink-100 hover:border-pink-300 bg-white"
+                }`}
               style={{ color: tab === t ? undefined : "var(--text)" }}
             >
               {t === "photos" ? "📷 Photos" : "🎬 Videos"}
@@ -165,7 +164,7 @@ export default function Gallery() {
                   />
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-end p-4">
-                    <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-2">
+                    <div className="w-10 h-10  bg-white/20 backdrop-blur-sm flex items-center justify-center mb-2">
                       <Eye size={18} color="white" />
                     </div>
                     <span className="text-white text-sm font-medium">{photo.label}</span>
@@ -206,13 +205,13 @@ export default function Gallery() {
                     />
                     <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center">
                       <div
-                        className="w-14 h-14 rounded-full flex items-center justify-center transition-transform group-hover:scale-110"
+                        className="w-14 h-14  flex items-center justify-center transition-transform group-hover:scale-110"
                         style={{ background: "rgba(190,24,93,0.9)" }}
                       >
                         <Play size={22} color="white" fill="white" />
                       </div>
                     </div>
-                    <span className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded-md font-medium">
+                    <span className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1  font-medium">
                       {video.duration}
                     </span>
                   </div>
@@ -239,13 +238,13 @@ export default function Gallery() {
             onClick={() => setLightbox(null)}
           >
             <button
-              className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+              className="absolute top-5 right-5 w-10 h-10  bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
               onClick={() => setLightbox(null)}
             >
               <X size={20} color="white" />
             </button>
             <button
-              className="absolute left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+              className="absolute left-5 top-1/2 -translate-y-1/2 w-10 h-10  bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
               onClick={(e) => { e.stopPropagation(); prev(); }}
             >
               <ChevronLeft size={24} color="white" />
@@ -268,7 +267,7 @@ export default function Gallery() {
               />
             </motion.div>
             <button
-              className="absolute right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+              className="absolute right-5 top-1/2 -translate-y-1/2 w-10 h-10  bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
               onClick={(e) => { e.stopPropagation(); next(); }}
             >
               <ChevronRight size={24} color="white" />
@@ -291,7 +290,7 @@ export default function Gallery() {
             onClick={() => setVideoModal(null)}
           >
             <button
-              className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+              className="absolute top-5 right-5 w-10 h-10  bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
               onClick={() => setVideoModal(null)}
             >
               <X size={20} color="white" />

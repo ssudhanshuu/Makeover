@@ -89,7 +89,7 @@ export default function Courses() {
               style={{ borderColor: course.border }}
             >
               {/* Badge/Tag */}
-              <span className="absolute top-4 right-4 text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-white/80 border border-pink-100 text-pink-700">
+              <span className="absolute top-4 right-4 text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5  bg-white/80 border border-pink-100 text-pink-700">
                 {course.tag}
               </span>
 

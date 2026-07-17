@@ -1,9 +1,16 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, IndianRupee, Sparkles } from "lucide-react";
+import { Calendar, IndianRupee, Sparkles, Search, Loader2 } from "lucide-react";
 
-const tabs = ["Makeup", "Skin Care", "Hair Care", "Nail Art", "Lehenga Rental", "Jewelry Rental"];
+const DEFAULT_TAB_ORDER = [
+  "Makeup",
+  "Skin Care",
+  "Hair Care",
+  "Nail Art",
+  "Lehenga Rental",
+  "Jewelry Rental",
+];
 
 const defaultServices = {
   Makeup: [
@@ -85,63 +92,135 @@ const tabIcons = {
   "Lehenga Rental": "👗",
   "Jewelry Rental": "💎",
 };
+const FALLBACK_ICON = "🌸";
+
+// Memoized card so switching search text / tabs doesn't re-render every
+// unrelated card, and so the list itself is cheap to diff.
+const ServiceCard = memo(function ServiceCard({ service, index, onBook }) {
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: Math.min(index * 0.03, 0.24) }}
+      className="card group relative flex flex-col justify-between overflow-hidden p-6 transition-all hover:-translate-y-0.5 hover:border-pink-300 hover:shadow-lg hover:shadow-pink-100/50"
+      style={{ minHeight: "200px" }}
+    >
+      {/* subtle accent glow on hover */}
+      <div
+        className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-40"
+        style={{ background: "var(--primary)" }}
+        aria-hidden="true"
+      />
+
+      <div>
+        <div className="mb-2 flex items-start justify-between gap-2">
+          <h3 className="flex-1 text-base font-bold leading-snug" style={{ color: "var(--text)" }}>
+            {service.name}
+          </h3>
+          <Sparkles size={14} className="mt-0.5 shrink-0 text-yellow-500" aria-hidden="true" />
+        </div>
+        <p className="mb-4 line-clamp-2 text-xs text-gray-500">{service.desc}</p>
+      </div>
+
+      <div>
+        <div className="mb-4 flex items-center gap-1">
+          <IndianRupee size={15} style={{ color: "var(--primary)" }} aria-hidden="true" />
+          <span className="text-2xl font-black tracking-tight" style={{ color: "var(--primary)" }}>
+            {service.price.toLocaleString("en-IN")}
+          </span>
+          {service.unit && (
+            <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>
+              {service.unit}
+            </span>
+          )}
+        </div>
+
+        <button
+          onClick={onBook}
+          className="flex w-full items-center justify-center gap-2 rounded-xl border py-2.5 text-xs font-bold transition-all hover:bg-pink-600 hover:text-white hover:border-pink-600"
+          style={{ borderColor: "var(--primary)", color: "var(--primary)" }}
+        >
+          <Calendar size={13} aria-hidden="true" />
+          Book Service
+        </button>
+      </div>
+    </motion.div>
+  );
+});
+
+function CardSkeleton() {
+  return (
+    <div className="card animate-pulse p-6" style={{ minHeight: "200px" }}>
+      <div className="mb-3 h-4 w-3/4 rounded bg-pink-100" />
+      <div className="mb-2 h-3 w-full rounded bg-pink-50" />
+      <div className="mb-6 h-3 w-2/3 rounded bg-pink-50" />
+      <div className="mb-4 h-7 w-1/3 rounded bg-pink-100" />
+      <div className="h-9 w-full rounded-xl bg-pink-50" />
+    </div>
+  );
+}
 
 export default function Services() {
   const [activeTab, setActiveTab] = useState("Makeup");
   const [services, setServices] = useState(defaultServices);
+  const [query, setQuery] = useState("");
+  const [status, setStatus] = useState("idle"); // idle | loading | error | done
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function loadServices() {
+      setStatus("loading");
       try {
-        const res = await fetch("/api/services");
+        const res = await fetch("/api/services", { signal: controller.signal });
         const json = await res.json();
-        if (json.success && json.data && json.data.length > 0) {
-          // Initialize empty categories
-          const grouped = {
-            Makeup: [],
-            "Skin Care": [],
-            "Hair Care": [],
-            "Nail Art": [],
-            "Lehenga Rental": [],
-            "Jewelry Rental": [],
-          };
-          
-          json.data.forEach((service) => {
+        if (json.success && json.data?.length > 0) {
+          const grouped = {};
+          for (const service of json.data) {
             const cat = service.category;
-            if (grouped[cat]) {
-              grouped[cat].push({
-                name: service.name,
-                price: service.price,
-                desc: service.desc,
-                unit: service.unit,
-              });
-            } else {
-              // Add support for new custom categories added by admin
-              if (!grouped[cat]) {
-                grouped[cat] = [];
-              }
-              grouped[cat].push({
-                name: service.name,
-                price: service.price,
-                desc: service.desc,
-                unit: service.unit,
-              });
-            }
-          });
+            if (!grouped[cat]) grouped[cat] = [];
+            grouped[cat].push({
+              name: service.name,
+              price: service.price,
+              desc: service.desc,
+              unit: service.unit,
+            });
+          }
           setServices(grouped);
         }
+        setStatus("done");
       } catch (err) {
-        console.error("Failed to load services from database, using fallback defaults.", err);
+        if (err.name !== "AbortError") {
+          console.error("Failed to load services from database, using fallback defaults.", err);
+          setStatus("error");
+        }
       }
     }
+
     loadServices();
+    return () => controller.abort();
   }, []);
 
-  const handleBook = () => {
-    const el = document.querySelector("#booking");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
+  // Tabs = default order first, then any custom categories the admin added
+  // that aren't in the default list. Previously these were silently dropped.
+  const tabs = useMemo(() => {
+    const extra = Object.keys(services).filter((c) => !DEFAULT_TAB_ORDER.includes(c));
+    return [...DEFAULT_TAB_ORDER, ...extra];
+  }, [services]);
 
+  const activeServices = useMemo(() => {
+    const list = services[activeTab] || [];
+    if (!query.trim()) return list;
+    const q = query.trim().toLowerCase();
+    return list.filter(
+      (s) => s.name.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q)
+    );
+  }, [services, activeTab, query]);
+
+  const handleBook = useCallback(() => {
+    document.querySelector("#booking")?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   return (
     <section id="services" className="section-pad bg-gradient-to-b from-white to-[#fdf8f5]">
@@ -152,7 +231,7 @@ export default function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="mb-12 text-center"
         >
           <span className="section-label">Our Expertise</span>
           <h2 className="section-title">Services & Pricing</h2>
@@ -167,115 +246,106 @@ export default function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-3.5 mb-12"
+          role="tablist"
+          aria-label="Service categories"
+          className="mb-6 flex flex-wrap justify-center gap-3.5"
         >
           {tabs.map((tab) => (
             <button
               key={tab}
+              role="tab"
+              aria-selected={activeTab === tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex items-center gap-2.5 px-6 py-3.5 rounded-full border text-sm font-semibold transition-all duration-300 ${
-                activeTab === tab
-                  ? "tab-active shadow-md scale-105"
-                  : "bg-white border-pink-100 hover:border-pink-300 hover:bg-pink-50"
-              }`}
+              className={`flex items-center gap-2.5 border px-6 py-3.5 text-sm font-semibold transition-all duration-300 ${activeTab === tab
+                ? "tab-active scale-105 shadow-md"
+                : "border-pink-100 bg-white hover:border-pink-300 hover:bg-pink-50"
+                }`}
               style={{
                 color: activeTab === tab ? undefined : "var(--text)",
                 borderColor: activeTab === tab ? undefined : "#f9a8d4",
               }}
             >
-              <span className="text-base">{tabIcons[tab]}</span>
+              <span className="text-base" aria-hidden="true">
+                {tabIcons[tab] || FALLBACK_ICON}
+              </span>
               {tab}
             </button>
           ))}
         </motion.div>
 
+        {/* Search / filter */}
+        <div className="mx-auto mb-10 max-w-md">
+          <div className="relative">
+            <Search
+              size={16}
+              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+              aria-hidden="true"
+            />
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={`Search in ${activeTab}...`}
+              aria-label={`Search services in ${activeTab}`}
+              className="w-full rounded-full border border-pink-100 bg-white py-2.5 pl-10 pr-4 text-sm outline-none transition-colors focus:border-pink-300"
+              style={{ color: "var(--text)" }}
+            />
+          </div>
+        </div>
+
         {/* Service Cards Container */}
         <div className="min-h-[400px]">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-            >
-              {(!services[activeTab] || services[activeTab].length === 0) ? (
-                <div className="col-span-full py-16 text-center text-slate-500 text-sm">
-                  No services listed in this category yet.
-                </div>
-              ) : (
-                services[activeTab].map((service, i) => (
+          {status === "loading" ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <CardSkeleton key={i} />
+              ))}
+            </div>
+          ) : (
+            <AnimatePresence mode="popLayout">
+              <motion.div
+                key={activeTab}
+                layout
+                className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+              >
+                {activeServices.length === 0 ? (
                   <motion.div
-                    key={service.name}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.35, delay: i * 0.05 }}
-                    className="card p-6 flex flex-col justify-between hover:border-pink-300 hover:shadow-pink-100/50 hover:shadow-lg transition-all"
-                    style={{ minHeight: "200px" }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="col-span-full py-16 text-center text-sm text-slate-500"
                   >
-                    <div>
-                      <div className="flex justify-between items-start mb-2">
-                        <h3
-                          className="font-bold text-base leading-snug flex-1 pr-2"
-                          style={{ color: "var(--text)" }}
-                        >
-                          {service.name}
-                        </h3>
-                        <Sparkles size={14} className="text-yellow-500 shrink-0 mt-0.5" />
-                      </div>
-                      <p className="text-xs text-gray-500 line-clamp-2 mb-4">
-                        {service.desc}
-                      </p>
-                    </div>
-                    
-                    <div>
-                      <div className="flex items-center gap-1 mb-4">
-                        <IndianRupee
-                          size={15}
-                          style={{ color: "var(--primary)" }}
-                        />
-                        <span
-                          className="text-2xl font-black tracking-tight"
-                          style={{ color: "var(--primary)" }}
-                        >
-                          {service.price.toLocaleString("en-IN")}
-                        </span>
-                        {service.unit && (
-                          <span
-                            className="text-xs font-semibold"
-                            style={{ color: "var(--text-muted)" }}
-                          >
-                            {service.unit}
-                          </span>
-                        )}
-                      </div>
-
-                      <button
-                        onClick={handleBook}
-                        className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl border text-xs font-bold transition-all hover:bg-pink-600 hover:text-white hover:border-pink-600 group"
-                        style={{
-                          borderColor: "var(--primary)",
-                          color: "var(--primary)",
-                        }}
-                      >
-                        <Calendar size={13} />
-                        Book Service
-                      </button>
-                    </div>
+                    {query
+                      ? `No services match "${query}" in ${activeTab}.`
+                      : "No services listed in this category yet."}
                   </motion.div>
-                ))
-              )}
-            </motion.div>
-          </AnimatePresence>
+                ) : (
+                  activeServices.map((service, i) => (
+                    <ServiceCard
+                      key={`${activeTab}-${service.name}`}
+                      service={service}
+                      index={i}
+                      onBook={handleBook}
+                    />
+                  ))
+                )}
+              </motion.div>
+            </AnimatePresence>
+          )}
         </div>
+
+        {status === "error" && (
+          <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs text-amber-600">
+            <Loader2 size={12} className="animate-spin" aria-hidden="true" />
+            Showing default pricing — live pricing is temporarily unavailable.
+          </p>
+        )}
 
         {/* Note */}
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center text-xs mt-12"
+          className="mt-12 text-center text-xs"
           style={{ color: "var(--text-muted)" }}
         >
           * Standard rental charges require refundable security deposit. Call us for details.

@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useEffect, useState } from "react";
 import { Menu, X, Sparkles } from "lucide-react";
 
 const navLinks = [
@@ -11,123 +12,112 @@ const navLinks = [
 ];
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", fn);
-    return () => window.removeEventListener("scroll", fn);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNav = (href) => {
-    setOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+  const handleNavigation = (href) => {
+    setMobileOpen(false);
+
+    const section = document.querySelector(href);
+
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
   };
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-400 ${
-        scrolled
-          ? "bg-white/90 backdrop-blur-lg shadow-sm py-2"
-          : "bg-transparent py-4"
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-lg shadow-lg py-3" : "bg-transparent py-5"}`}
     >
-      <div className="container">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <button
-            onClick={() => handleNav("#home")}
-            className="flex items-center gap-2 text-left"
-          >
-            <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center"
-              style={{
-                background: "linear-gradient(135deg, #be185d, #9d174d)",
-              }}
-            >
-              <Sparkles size={18} color="white" />
-            </div>
-            <div>
-              <div
-                className="font-playfair font-bold leading-tight text-lg"
-                style={{ color: "var(--primary)" }}
-              >
-                Ruchi Makeover
-              </div>
-              <div
-                className="text-xs leading-tight"
-                style={{ color: "var(--text-muted)" }}
-              >
-                Find your beauty
-              </div>
-            </div>
-          </button>
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-8">
+        {/* Logo */}
+        <button
+          onClick={() => handleNavigation("#home")}
+          className="flex items-center gap-3"
+        >
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl from-pink-600 to-rose-700 shadow-lg">
+            <Sparkles size={20} className="text-white" />
+          </div>
 
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1">
-            {navLinks.map((l) => (
+          <div className="text-left">
+            <h2 className="font-serif text-2xl font-bold text-pink-700">
+              Ruchi Makeover
+            </h2>
+
+            <p className="text-xs text-gray-500">
+              Find your beauty
+            </p>
+          </div>
+        </button>
+
+        {/* Desktop Menu */}
+        <nav className="hidden items-center gap-10 lg:flex">
+          {navLinks.map((item) => (
+            <button
+              key={item.href}
+              onClick={() => handleNavigation(item.href)}
+              className="group relative text-[15px] font-medium text-gray-700 transition-all duration-300 hover:text-pink-600"
+            >
+              {item.label}
+
+              <span className="absolute -bottom-1 left-0  w-0 bg-pink-600 transition-all duration-300 group-hover:w-full"></span>
+            </button>
+          ))}
+
+          <button
+            onClick={() => handleNavigation("#booking")}
+            className="rounded-full bg-pink-600 px-10 py-10 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-pink-700 hover:shadow-xl"
+          >
+            Book Now
+          </button>
+        </nav>
+
+        {/* Mobile Toggle */}
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="rounded-lg p-2 text-pink-700 transition hover:bg-pink-100 lg:hidden"
+        >
+          {mobileOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <div
+        className={`overflow-hidden transition-all duration-300 lg:hidden ${mobileOpen ? "max-h-[500px]" : "max-h-0"
+          }`}
+      >
+        <div className="mx-5 mt-4 rounded-2xl bg-white p-5 shadow-2xl">
+          <div className="flex flex-col gap-2">
+            {navLinks.map((item) => (
               <button
-                key={l.href}
-                onClick={() => handleNav(l.href)}
-                className="px-4 py-2 rounded-full text-sm font-medium transition-colors hover:bg-pink-50"
-                style={{ color: "var(--text)" }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = "var(--primary)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = "var(--text)")
-                }
+                key={item.href}
+                onClick={() => handleNavigation(item.href)}
+                className="rounded-xl px-4 py-3 text-left text-gray-700 transition-all duration-300 hover:bg-pink-50 hover:text-pink-600"
               >
-                {l.label}
+                {item.label}
               </button>
             ))}
+
             <button
-              onClick={() => handleNav("#booking")}
-              className="btn-primary ml-3 text-sm py-2.5 px-6"
+              onClick={() => handleNavigation("#booking")}
+              className="mt-3 rounded-xl bg-pink-600 py-3 font-semibold text-white transition-all duration-300 hover:bg-pink-700"
             >
-              Book Now
+              Book Appointment
             </button>
-          </nav>
-
-          {/* Mobile hamburger */}
-          <button
-            className="md:hidden p-2 rounded-xl"
-            style={{ color: "var(--primary)" }}
-            onClick={() => setOpen(!open)}
-            aria-label="Toggle menu"
-          >
-            {open ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-
-        {/* Mobile drawer */}
-        {open && (
-          <div
-            className="md:hidden mt-3 rounded-2xl border p-4 shadow-xl bg-white"
-            style={{ borderColor: "var(--border)" }}
-          >
-            <div className="flex flex-col gap-1">
-              {navLinks.map((l) => (
-                <button
-                  key={l.href}
-                  onClick={() => handleNav(l.href)}
-                  className="text-left px-4 py-3 rounded-xl text-sm font-medium hover:bg-pink-50 transition-colors"
-                  style={{ color: "var(--text)" }}
-                >
-                  {l.label}
-                </button>
-              ))}
-              <button
-                onClick={() => handleNav("#booking")}
-                className="btn-primary mt-2 justify-center text-sm py-3"
-              >
-                Book Appointment
-              </button>
-            </div>
           </div>
-        )}
+        </div>
       </div>
     </header>
   );

@@ -160,7 +160,7 @@ export default function Contact() {
                 style={{ borderColor: "var(--border)" }}
               >
                 <div
-                  className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5"
+                  className="w-16 h-16  flex items-center justify-center mx-auto mb-5"
                   style={{ background: "linear-gradient(135deg, #be185d, #9d174d)" }}
                 >
                   <CheckCircle size={30} color="white" />
