@@ -89,6 +89,7 @@ export default function Gallery() {
   const [tab, setTab] = useState("photos");
   const [lightbox, setLightbox] = useState(null); // photo index or null
   const [videoModal, setVideoModal] = useState(null); // youtube id or null
+  const [showAllPhotos, setShowAllPhotos] = useState(false);
 
   const prev = () => setLightbox((i) => (i - 1 + photos.length) % photos.length);
   const next = () => setLightbox((i) => (i + 1) % photos.length);
@@ -97,10 +98,6 @@ export default function Gallery() {
     <section
       id="gallery"
       className="section-pad"
-      style={{
-        background:
-          "linear-gradient(180deg, #fff 0%, #fdf8f5 100%)",
-      }}
     >
       <div className="container">
         {/* Header */}
@@ -136,42 +133,49 @@ export default function Gallery() {
         {/* Photos Grid */}
         <AnimatePresence mode="wait">
           {tab === "photos" && (
-            <motion.div
-              key="photos"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
-            >
-              {photos.map((photo, i) => (
-                <motion.div
-                  key={photo.id}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.45, delay: i * 0.08 }}
-                  onClick={() => setLightbox(i)}
-                  className="relative group cursor-pointer rounded-2xl overflow-hidden shadow-md"
-                  style={{ aspectRatio: "4/3" }}
-                >
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-end p-4">
-                    <div className="w-10 h-10  bg-white/20 backdrop-blur-sm flex items-center justify-center mb-2">
-                      <Eye size={18} color="white" />
+            <div key="photos" className="flex flex-col items-center w-full">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="grid grid-cols-3 gap-2 sm:gap-4 w-full"
+              >
+                {(showAllPhotos ? photos : photos.slice(0, 9)).map((photo, i) => (
+                  <motion.div
+                    key={photo.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: Math.min(i * 0.05, 0.3) }}
+                    onClick={() => setLightbox(i)}
+                    className="relative group cursor-pointer overflow-hidden shadow-sm aspect-square"
+                  >
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      sizes="(max-width: 640px) 33vw, 33vw"
+                    />
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-2">
+                      <Eye size={20} color="white" />
+                      <span className="text-white text-[10px] sm:text-xs font-medium mt-1 text-center hidden sm:block">{photo.label}</span>
                     </div>
-                    <span className="text-white text-sm font-medium">{photo.label}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+                  </motion.div>
+                ))}
+              </motion.div>
+              
+              {!showAllPhotos && photos.length > 9 && (
+                <button 
+                  onClick={() => setShowAllPhotos(true)}
+                  className="mt-8 btn-outline text-sm"
+                >
+                  View All Photos
+                </button>
+              )}
+            </div>
           )}
 
           {/* Videos Grid */}
@@ -206,7 +210,7 @@ export default function Gallery() {
                     <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center">
                       <div
                         className="w-14 h-14  flex items-center justify-center transition-transform group-hover:scale-110"
-                        style={{ background: "rgba(190,24,93,0.9)" }}
+                        style={{ background: "rgba(183,110,121,0.9)" }}
                       >
                         <Play size={22} color="white" fill="white" />
                       </div>

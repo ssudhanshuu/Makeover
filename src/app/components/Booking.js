@@ -144,10 +144,6 @@ export default function Booking() {
     <section
       id="booking"
       className="section-pad"
-      style={{
-        background:
-          "linear-gradient(135deg, #fdf8f5 0%, #fce7f3 50%, #fdf4ff 100%)",
-      }}
     >
       <div className="container">
         {/* Header */}
@@ -176,8 +172,8 @@ export default function Booking() {
               style={{ borderColor: "var(--border)" }}
             >
               <div
-                className="w-20 h-20  flex items-center justify-center mx-auto mb-6"
-                style={{ background: "linear-gradient(135deg, #be185d, #9d174d)" }}
+                className="w-20 h-20  flex items-center justify-center mx-auto mb-6 rounded-full"
+                style={{ background: "linear-gradient(135deg, var(--primary), var(--primary-dark))" }}
               >
                 <CheckCircle size={38} color="white" />
               </div>

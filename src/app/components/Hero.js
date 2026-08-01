@@ -14,10 +14,6 @@ export default function Hero() {
     <section
       id="home"
       className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-12"
-      style={{
-        background:
-          "linear-gradient(135deg, #fdf8f5 0%, #fce7f3 40%, #fdf4ff 70%, #fff1f5 100%)",
-      }}
     >
       {/* Decorative blobs */}
       <div
@@ -25,7 +21,7 @@ export default function Hero() {
         style={{
           width: 500,
           height: 500,
-          background: "#be185d",
+          background: "var(--primary)",
           top: -100,
           right: -100,
         }}
@@ -35,7 +31,7 @@ export default function Hero() {
         style={{
           width: 350,
           height: 350,
-          background: "#d4af37",
+          background: "var(--accent)",
           bottom: -80,
           left: -80,
         }}

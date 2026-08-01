@@ -58,7 +58,7 @@ export default function Courses() {
   };
 
   return (
-    <section id="courses" className="section-pad bg-white">
+    <section id="courses" className="section-pad">
       <div className="container">
         {/* Header */}
         <motion.div

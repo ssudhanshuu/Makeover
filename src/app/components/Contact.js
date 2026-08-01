@@ -27,10 +27,6 @@ export default function Contact() {
     <section
       id="contact"
       className="section-pad"
-      style={{
-        background:
-          "linear-gradient(135deg, #fdf8f5 0%, #fce7f3 60%, #fdf4ff 100%)",
-      }}
     >
       <div className="container">
         {/* Header */}
@@ -96,15 +92,7 @@ export default function Contact() {
                   </span>
                 ),
               },
-              {
-                icon: <Clock size={20} />,
-                title: "Working Hours",
-                content: (
-                  <span style={{ color: "var(--text)" }}>
-                    Mon – Sat: 9:00 AM – 8:00 PM
-                  </span>
-                ),
-              },
+
             ].map((item) => (
               <div
                 key={item.title}
@@ -114,7 +102,7 @@ export default function Contact() {
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
                   style={{
-                    background: "linear-gradient(135deg, #be185d22, #be185d11)",
+                    background: "rgba(183, 110, 121, 0.15)",
                     color: "var(--primary)",
                   }}
                 >
@@ -160,8 +148,8 @@ export default function Contact() {
                 style={{ borderColor: "var(--border)" }}
               >
                 <div
-                  className="w-16 h-16  flex items-center justify-center mx-auto mb-5"
-                  style={{ background: "linear-gradient(135deg, #be185d, #9d174d)" }}
+                  className="w-16 h-16  flex items-center justify-center mx-auto mb-5 rounded-full"
+                  style={{ background: "linear-gradient(135deg, var(--primary), var(--primary-dark))" }}
                 >
                   <CheckCircle size={30} color="white" />
                 </div>

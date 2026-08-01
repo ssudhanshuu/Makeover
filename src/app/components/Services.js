@@ -223,7 +223,7 @@ export default function Services() {
   }, []);
 
   return (
-    <section id="services" className="section-pad bg-gradient-to-b from-white to-[#fdf8f5]">
+    <section id="services" className="section-pad">
       <div className="container">
         {/* Header */}
         <motion.div
