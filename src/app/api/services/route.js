@@ -78,10 +78,10 @@ const initialServices = {
 export async function GET() {
   try {
     await dbConnect();
-    
+
     // Check if services are already in the database
     let services = await Service.find({}).sort({ createdAt: -1 });
-    
+
     // Seed if empty
     if (services.length === 0) {
       console.log("No services found in MongoDB. Database seeding in progress...");
@@ -97,15 +97,15 @@ export async function GET() {
           });
         }
       }
-      
+
       // Bulk insert
       await Service.insertMany(seedData);
-      
+
       // Re-fetch seeded data
       services = await Service.find({}).sort({ createdAt: -1 });
       console.log(`Seeded ${services.length} default services.`);
     }
-    
+
     return NextResponse.json({ success: true, data: services });
   } catch (error) {
     console.error("GET Services API Error:", error);
@@ -120,16 +120,16 @@ export async function POST(request) {
   try {
     await dbConnect();
     const body = await request.json();
-    
+
     const { name, category, price, unit, desc } = body;
-    
+
     if (!name || !category || price === undefined) {
       return NextResponse.json(
         { success: false, error: "Name, category, and price are required." },
         { status: 400 }
       );
     }
-    
+
     // Create new service
     const newService = await Service.create({
       name,
@@ -138,11 +138,11 @@ export async function POST(request) {
       unit: unit || "",
       desc: desc || "",
     });
-    
+
     return NextResponse.json({ success: true, data: newService }, { status: 201 });
   } catch (error) {
     console.error("POST Services API Error:", error);
-    
+
     // Check for duplicate key error (code 11000)
     if (error.code === 11000) {
       return NextResponse.json(
@@ -150,7 +150,7 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-    
+
     return NextResponse.json(
       { success: false, error: error.message || "Failed to create service" },
       { status: 500 }

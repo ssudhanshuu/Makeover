@@ -8,10 +8,15 @@ export const metadata = {
     "beauty parlor moradabad, bridal makeup, ruchi makeover, skin care, lehenga rental, makeup artist moradabad",
 };
 
+import BackgroundAnimations from "./components/BackgroundAnimations";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <BackgroundAnimations />
+        {children}
+      </body>
     </html>
   );
 }

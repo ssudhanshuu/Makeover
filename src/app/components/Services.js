@@ -103,7 +103,7 @@ const ServiceCard = memo(function ServiceCard({ service, index, onBook }) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: Math.min(index * 0.03, 0.24) }}
-      className="card group relative flex flex-col justify-between overflow-hidden p-6 transition-all hover:-translate-y-0.5 hover:border-pink-300 hover:shadow-lg hover:shadow-pink-100/50"
+      className="card group relative flex flex-col justify-between overflow-hidden p-8 transition-all hover:-translate-y-0.5 hover:border-pink-300 hover:shadow-lg hover:shadow-pink-100/50"
       style={{ minHeight: "200px" }}
     >
       {/* subtle accent glow on hover */}
@@ -138,7 +138,7 @@ const ServiceCard = memo(function ServiceCard({ service, index, onBook }) {
 
         <button
           onClick={onBook}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border py-2.5 text-xs font-bold transition-all hover:bg-pink-600 hover:text-white hover:border-pink-600"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border py-3.5 px-4 text-sm font-bold transition-all hover:bg-pink-600 hover:text-white hover:border-pink-600"
           style={{ borderColor: "var(--primary)", color: "var(--primary)" }}
         >
           <Calendar size={13} aria-hidden="true" />
@@ -151,7 +151,7 @@ const ServiceCard = memo(function ServiceCard({ service, index, onBook }) {
 
 function CardSkeleton() {
   return (
-    <div className="card animate-pulse p-6" style={{ minHeight: "200px" }}>
+    <div className="card animate-pulse p-8" style={{ minHeight: "200px" }}>
       <div className="mb-3 h-4 w-3/4 rounded bg-pink-100" />
       <div className="mb-2 h-3 w-full rounded bg-pink-50" />
       <div className="mb-6 h-3 w-2/3 rounded bg-pink-50" />

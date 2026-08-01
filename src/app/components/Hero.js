@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { Sparkles, ChevronDown, Star, ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Tilt from "react-parallax-tilt";
 
 export default function Hero() {
   const handleScroll = (id) => {
@@ -40,34 +41,7 @@ export default function Hero() {
         }}
       />
 
-      {/* Floating sparkle icons */}
-      {[
-        { top: "15%", left: "8%", size: 24, delay: 0 },
-        { top: "25%", right: "12%", size: 18, delay: 0.4 },
-        { bottom: "25%", left: "15%", size: 20, delay: 0.8 },
-        { bottom: "30%", right: "18%", size: 16, delay: 0.2 },
-      ].map((s, i) => (
-        <motion.div
-          key={i}
-          animate={{ y: [0, -12, 0], rotate: [0, 15, -15, 0] }}
-          transition={{
-            duration: 4 + i * 0.5,
-            repeat: Infinity,
-            delay: s.delay,
-          }}
-          style={{
-            position: "absolute",
-            top: s.top,
-            left: s.left,
-            right: s.right,
-            bottom: s.bottom,
-            color: i % 2 === 0 ? "var(--primary)" : "var(--accent)",
-            opacity: 0.4,
-          }}
-        >
-          <Sparkles size={s.size} />
-        </motion.div>
-      ))}
+
 
       <div className="container relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -187,23 +161,25 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Hero Right Column: Animated Collaged Images */}
-          <div className="lg:col-span-5 relative w-full h-[450px] sm:h-[500px] hidden sm:block">
+          {/* Hero Right Column: Animated Collaged Images with 3D Tilt */}
+          <div className="lg:col-span-5 relative w-full h-[450px] sm:h-[500px] hidden sm:block z-10" style={{ perspective: "1000px" }}>
             {/* Main/Center Image */}
             <motion.div
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="absolute w-[65%] h-[75%] right-[5%] top-[10%] rounded-3xl overflow-hidden shadow-2xl border-4 border-white z-10"
+              className="absolute w-[65%] h-[75%] right-[5%] top-[10%] z-10"
             >
-              <Image
-                src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&q=80"
-                alt="Bridal Makeup Look"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 50vw, 30vw"
-                priority
-              />
+              <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} perspective={1000} transitionSpeed={1500} scale={1.05} className="w-full h-full rounded-3xl overflow-hidden shadow-3d border-4 border-white">
+                <Image
+                  src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&q=80"
+                  alt="Bridal Makeup Look"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 50vw, 30vw"
+                  priority
+                />
+              </Tilt>
             </motion.div>
 
             {/* Second/Floating Left Image */}
@@ -211,16 +187,18 @@ export default function Hero() {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="absolute w-[45%] h-[55%] left-0 bottom-[5%] rounded-3xl overflow-hidden shadow-2xl border-4 border-white z-20"
+              className="absolute w-[45%] h-[55%] left-0 bottom-[5%] z-20"
               style={{ animation: "float 4s ease-in-out infinite" }}
             >
-              <Image
-                src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&q=80"
-                alt="Makeup Artist Close Up"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 30vw, 20vw"
-              />
+              <Tilt tiltMaxAngleX={15} tiltMaxAngleY={15} perspective={800} transitionSpeed={1500} scale={1.08} className="w-full h-full rounded-3xl overflow-hidden shadow-3d border-4 border-white glass-3d">
+                <Image
+                  src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&q=80"
+                  alt="Makeup Artist Close Up"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 30vw, 20vw"
+                />
+              </Tilt>
             </motion.div>
 
             {/* Third/Floating Small Top Left Image */}
@@ -228,16 +206,18 @@ export default function Hero() {
               initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="absolute w-[35%] h-[40%] left-[10%] top-0 rounded-3xl overflow-hidden shadow-xl border-4 border-white z-0"
+              className="absolute w-[35%] h-[40%] left-[10%] top-0 z-0"
               style={{ animation: "float 4s ease-in-out infinite 2s" }}
             >
-              <Image
-                src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80"
-                alt="Wedding Jewelry"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 25vw, 15vw"
-              />
+              <Tilt tiltMaxAngleX={20} tiltMaxAngleY={20} perspective={800} transitionSpeed={1500} scale={1.1} className="w-full h-full rounded-3xl overflow-hidden shadow-3d border-4 border-white">
+                <Image
+                  src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80"
+                  alt="Wedding Jewelry"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 25vw, 15vw"
+                />
+              </Tilt>
             </motion.div>
           </div>
         </div>

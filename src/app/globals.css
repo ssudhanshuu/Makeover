@@ -21,8 +21,6 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html {
@@ -30,11 +28,19 @@ html {
 }
 
 body {
-  background: var(--bg);
+  background: linear-gradient(-45deg, #fce7f3, #fbcfe8, #f3e8ff, #fae8ff, #fff1f2);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
   color: var(--text);
   font-family: "Poppins", sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .font-playfair {
@@ -231,3 +237,18 @@ body {
 @media (max-width: 640px) {
   .section-pad { padding: 60px 0; }
 }
+
+/* ── 3D & Glassmorphism Utilities ── */
+.glass-3d {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+}
+
+.shadow-3d {
+  box-shadow: 0 30px 60px -12px rgba(190, 24, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.2);
+}
+
