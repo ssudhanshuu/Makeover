@@ -124,7 +124,7 @@ export default function Gallery() {
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`px-7 py-2.5  border text-sm font-semibold transition-all ${tab === t ? "tab-active" : "border-pink-100 hover:border-pink-300 bg-white"
+              className={`px-7 py-2.5 rounded-full border text-sm font-semibold transition-all ${tab === t ? "tab-active" : "border-pink-100 hover:border-pink-300 bg-white"
                 }`}
               style={{ color: tab === t ? undefined : "var(--text)" }}
             >

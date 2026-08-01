@@ -256,7 +256,7 @@ export default function Services() {
               role="tab"
               aria-selected={activeTab === tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex items-center gap-2.5 border px-6 py-3.5 text-sm font-semibold transition-all duration-300 ${activeTab === tab
+              className={`flex items-center gap-2.5 border rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300 ${activeTab === tab
                 ? "tab-active scale-105 shadow-md"
                 : "border-pink-100 bg-white hover:border-pink-300 hover:bg-pink-50"
                 }`}

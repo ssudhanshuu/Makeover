@@ -78,7 +78,7 @@ export default function Header() {
 
           <button
             onClick={() => handleNavigation("#booking")}
-            className="rounded-full bg-pink-600 px-10 py-10 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-pink-700 hover:shadow-xl"
+            className="rounded-full bg-pink-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-pink-700 hover:shadow-xl"
           >
             Book Now
           </button>
