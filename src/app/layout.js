@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <BackgroundAnimations />
+        {/* <BackgroundAnimations /> */}
         {children}
       </body>
     </html>

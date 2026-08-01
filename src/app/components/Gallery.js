@@ -1,95 +1,36 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, Eye, Play } from "lucide-react";
-
-const photos = [
-  {
-    id: 1,
-    src: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&q=80",
-    alt: "Bridal Makeup Look",
-    label: "Bridal Makeup",
-  },
-  {
-    id: 2,
-    src: "https://images.unsplash.com/photo-1519415510236-718bcea615f4?w=600&q=80",
-    alt: "Party Glam Makeup",
-    label: "Party Glam",
-  },
-  {
-    id: 3,
-    src: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80",
-    alt: "Bridal Jewelry Look",
-    label: "Bridal Look",
-  },
-  {
-    id: 4,
-    src: "https://images.unsplash.com/photo-1457972729786-0411a3b2b626?w=600&q=80",
-    alt: "Skin Care Treatment",
-    label: "Glow Skin",
-  },
-  {
-    id: 5,
-    src: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80",
-    alt: "Beauty Salon Interior",
-    label: "Our Studio",
-  },
-  {
-    id: 6,
-    src: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&q=80",
-    alt: "Makeup Products",
-    label: "Premium Products",
-  },
-  {
-    id: 7,
-    src: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&q=80",
-    alt: "Engagement Makeup",
-    label: "Engagement Look",
-  },
-  {
-    id: 8,
-    src: "https://images.unsplash.com/photo-1583241800698-e8ab01830a66?w=600&q=80",
-    alt: "Mehndi Function Look",
-    label: "Mehndi Look",
-  },
-  {
-    id: 9,
-    src: "https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?w=600&q=80",
-    alt: "Traditional Bridal",
-    label: "Traditional Bridal",
-  },
-];
-
-const videos = [
-  {
-    id: 1,
-    thumb: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=500&q=70",
-    title: "Bridal Makeup Tutorial",
-    duration: "8:24",
-    youtubeId: "dQw4w9WgXcQ",
-  },
-  {
-    id: 2,
-    thumb: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500&q=70",
-    title: "Full Bridal Transformation",
-    duration: "15:30",
-    youtubeId: "dQw4w9WgXcQ",
-  },
-  {
-    id: 3,
-    thumb: "https://images.unsplash.com/photo-1519415510236-718bcea615f4?w=500&q=70",
-    title: "Party Makeup Look",
-    duration: "6:15",
-    youtubeId: "dQw4w9WgXcQ",
-  },
-];
+import { X, ChevronLeft, ChevronRight, Eye, Play, Loader2 } from "lucide-react";
 
 export default function Gallery() {
+  const [photos, setPhotos] = useState([]);
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const [tab, setTab] = useState("photos");
   const [lightbox, setLightbox] = useState(null); // photo index or null
   const [videoModal, setVideoModal] = useState(null); // youtube id or null
   const [showAllPhotos, setShowAllPhotos] = useState(false);
+
+  useEffect(() => {
+    const fetchGallery = async () => {
+      try {
+        const res = await fetch("/api/gallery");
+        const data = await res.json();
+        if (data.success) {
+          setPhotos(data.photos);
+          setVideos(data.videos);
+        }
+      } catch (error) {
+        console.error("Failed to fetch gallery:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchGallery();
+  }, []);
 
   const prev = () => setLightbox((i) => (i - 1 + photos.length) % photos.length);
   const next = () => setLightbox((i) => (i + 1) % photos.length);
@@ -130,105 +71,114 @@ export default function Gallery() {
           ))}
         </div>
 
-        {/* Photos Grid */}
-        <AnimatePresence mode="wait">
-          {tab === "photos" && (
-            <div key="photos" className="flex flex-col items-center w-full">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="grid grid-cols-3 gap-2 sm:gap-4 w-full"
-              >
-                {(showAllPhotos ? photos : photos.slice(0, 9)).map((photo, i) => (
+        {/* Loading State */}
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <Loader2 size={32} className="animate-spin" style={{ color: "var(--primary)" }} />
+          </div>
+        ) : (
+          <>
+            {/* Photos Grid */}
+            <AnimatePresence mode="wait">
+              {tab === "photos" && (
+                <div key="photos" className="flex flex-col items-center w-full">
                   <motion.div
-                    key={photo.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: Math.min(i * 0.05, 0.3) }}
-                    onClick={() => setLightbox(i)}
-                    className="relative group cursor-pointer overflow-hidden shadow-sm aspect-square"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="grid grid-cols-3 gap-2 sm:gap-4 w-full"
                   >
-                    <Image
-                      src={photo.src}
-                      alt={photo.alt}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      sizes="(max-width: 640px) 33vw, 33vw"
-                    />
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-2">
-                      <Eye size={20} color="white" />
-                      <span className="text-white text-[10px] sm:text-xs font-medium mt-1 text-center hidden sm:block">{photo.label}</span>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-              
-              {!showAllPhotos && photos.length > 9 && (
-                <button 
-                  onClick={() => setShowAllPhotos(true)}
-                  className="mt-8 btn-outline text-sm"
-                >
-                  View All Photos
-                </button>
-              )}
-            </div>
-          )}
-
-          {/* Videos Grid */}
-          {tab === "videos" && (
-            <motion.div
-              key="videos"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6"
-            >
-              {videos.map((video, i) => (
-                <motion.div
-                  key={video.id}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.45, delay: i * 0.1 }}
-                  onClick={() => setVideoModal(video.youtubeId)}
-                  className="group cursor-pointer rounded-2xl overflow-hidden shadow-md bg-white border"
-                  style={{ borderColor: "var(--border)" }}
-                >
-                  <div className="relative" style={{ aspectRatio: "16/9" }}>
-                    <Image
-                      src={video.thumb}
-                      alt={video.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                    <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                      <div
-                        className="w-14 h-14  flex items-center justify-center transition-transform group-hover:scale-110"
-                        style={{ background: "rgba(183,110,121,0.9)" }}
+                    {(showAllPhotos ? photos : photos.slice(0, 9)).map((photo, i) => (
+                      <motion.div
+                        key={photo._id || photo.id || i}
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.3, delay: Math.min(i * 0.05, 0.3) }}
+                        onClick={() => setLightbox(i)}
+                        className="relative group cursor-pointer overflow-hidden shadow-sm aspect-square"
                       >
-                        <Play size={22} color="white" fill="white" />
+                        <Image
+                          src={photo.src}
+                          alt={photo.alt || "Gallery Photo"}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-110"
+                          sizes="(max-width: 640px) 33vw, 33vw"
+                        />
+                        {/* Overlay */}
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-2">
+                          <Eye size={20} color="white" />
+                          <span className="text-white text-[10px] sm:text-xs font-medium mt-1 text-center hidden sm:block">{photo.label}</span>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                  
+                  {!showAllPhotos && photos.length > 9 && (
+                    <button 
+                      onClick={() => setShowAllPhotos(true)}
+                      className="mt-8 btn-outline text-sm"
+                    >
+                      View All Photos
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* Videos Grid */}
+              {tab === "videos" && (
+                <motion.div
+                  key="videos"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
+                >
+                  {videos.map((video, i) => (
+                    <motion.div
+                      key={video._id || video.id || i}
+                      initial={{ opacity: 0, y: 24 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.45, delay: i * 0.1 }}
+                      onClick={() => setVideoModal(video.youtubeId)}
+                      className="group cursor-pointer rounded-2xl overflow-hidden shadow-md bg-white border"
+                      style={{ borderColor: "var(--border)" }}
+                    >
+                      <div className="relative" style={{ aspectRatio: "16/9" }}>
+                        <Image
+                          src={video.thumb}
+                          alt={video.title || "Gallery Video"}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                          <div
+                            className="w-14 h-14  flex items-center justify-center transition-transform group-hover:scale-110"
+                            style={{ background: "rgba(183,110,121,0.9)" }}
+                          >
+                            <Play size={22} color="white" fill="white" />
+                          </div>
+                        </div>
+                        <span className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1  font-medium">
+                          {video.duration}
+                        </span>
                       </div>
-                    </div>
-                    <span className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1  font-medium">
-                      {video.duration}
-                    </span>
-                  </div>
-                  <div className="p-4">
-                    <h4 className="font-semibold text-sm" style={{ color: "var(--text)" }}>
-                      {video.title}
-                    </h4>
-                  </div>
+                      <div className="p-4">
+                        <h4 className="font-semibold text-sm" style={{ color: "var(--text)" }}>
+                          {video.title}
+                        </h4>
+                      </div>
+                    </motion.div>
+                  ))}
                 </motion.div>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+              )}
+            </AnimatePresence>
+          </>
+        )}
       </div>
 
       {/* Photo Lightbox */}

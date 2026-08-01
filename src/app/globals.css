@@ -15,6 +15,7 @@
   --border: #eadcda;
   --shadow: 0 4px 24px rgba(183, 110, 121, 0.08);
   --shadow-lg: 0 12px 40px rgba(183, 110, 121, 0.12);
+  color-scheme: light;
 }
 
 *,
@@ -25,9 +26,11 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: var(--bg);
 }
 
 body {
+  background-color: var(--bg);
   background: linear-gradient(-45deg, #faf5f2, #f9efe9, #f4e9e5, #faeeea, #fcfaf8);
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
