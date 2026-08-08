@@ -62,7 +62,7 @@ export default function Gallery() {
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`px-7 py-2.5 rounded-full border text-sm font-semibold transition-all ${tab === t ? "tab-active" : "border-pink-100 hover:border-pink-300 bg-white"
+              className={`px-7 py-2.5 rounded-full border text-sm font-semibold transition-all ${tab === t ? "tab-active" : "border-[var(--border)] hover:border-[var(--primary)] bg-[var(--bg-white)]"
                 }`}
               style={{ color: tab === t ? undefined : "var(--text)" }}
             >
@@ -144,7 +144,7 @@ export default function Gallery() {
                       viewport={{ once: true }}
                       transition={{ duration: 0.45, delay: i * 0.1 }}
                       onClick={() => setVideoModal(video.youtubeId)}
-                      className="group cursor-pointer rounded-2xl overflow-hidden shadow-md bg-white border"
+                      className="group cursor-pointer rounded-2xl overflow-hidden shadow-md bg-[var(--bg-white)] border"
                       style={{ borderColor: "var(--border)" }}
                     >
                       <div className="relative" style={{ aspectRatio: "16/9" }}>
@@ -192,13 +192,13 @@ export default function Gallery() {
             onClick={() => setLightbox(null)}
           >
             <button
-              className="absolute top-5 right-5 w-10 h-10  bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+              className="absolute top-5 right-5 w-10 h-10  bg-[var(--bg-white)]/10 flex items-center justify-center hover:bg-[var(--bg-white)]/20 transition-colors"
               onClick={() => setLightbox(null)}
             >
               <X size={20} color="white" />
             </button>
             <button
-              className="absolute left-5 top-1/2 -translate-y-1/2 w-10 h-10  bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+              className="absolute left-5 top-1/2 -translate-y-1/2 w-10 h-10  bg-[var(--bg-white)]/10 flex items-center justify-center hover:bg-[var(--bg-white)]/20 transition-colors"
               onClick={(e) => { e.stopPropagation(); prev(); }}
             >
               <ChevronLeft size={24} color="white" />
@@ -221,7 +221,7 @@ export default function Gallery() {
               />
             </motion.div>
             <button
-              className="absolute right-5 top-1/2 -translate-y-1/2 w-10 h-10  bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+              className="absolute right-5 top-1/2 -translate-y-1/2 w-10 h-10  bg-[var(--bg-white)]/10 flex items-center justify-center hover:bg-[var(--bg-white)]/20 transition-colors"
               onClick={(e) => { e.stopPropagation(); next(); }}
             >
               <ChevronRight size={24} color="white" />
@@ -244,7 +244,7 @@ export default function Gallery() {
             onClick={() => setVideoModal(null)}
           >
             <button
-              className="absolute top-5 right-5 w-10 h-10  bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+              className="absolute top-5 right-5 w-10 h-10  bg-[var(--bg-white)]/10 flex items-center justify-center hover:bg-[var(--bg-white)]/20 transition-colors"
               onClick={() => setVideoModal(null)}
             >
               <X size={20} color="white" />

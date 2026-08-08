@@ -89,7 +89,7 @@ export default function Courses() {
               style={{ borderColor: course.border }}
             >
               {/* Badge/Tag */}
-              <span className="absolute top-4 right-4 text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5  bg-white/80 border border-pink-100 text-pink-700">
+              <span className="absolute top-4 right-4 text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5  bg-[var(--bg-white)]/80 border border-[var(--border)] text-[var(--primary)]">
                 {course.tag}
               </span>
 
@@ -103,7 +103,7 @@ export default function Courses() {
                 </div>
 
                 {/* Duration */}
-                <div className="flex items-center gap-1.5 mb-3 text-pink-700">
+                <div className="flex items-center gap-1.5 mb-3 text-[var(--primary)]">
                   <Clock size={13} />
                   <span className="text-xs font-bold tracking-wide uppercase">
                     {course.duration}
@@ -129,7 +129,7 @@ export default function Courses() {
 
               {/* Price & Action */}
               <div>
-                <div className="flex items-center gap-1 mb-5 border-t border-dashed border-pink-100 pt-4">
+                <div className="flex items-center gap-1 mb-5 border-t border-dashed border-[var(--border)] pt-4">
                   <IndianRupee size={15} style={{ color: "var(--accent)" }} />
                   <span
                     className="text-2xl font-black tracking-tight"

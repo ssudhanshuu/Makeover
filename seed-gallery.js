@@ -26,7 +26,7 @@ const photos = [
   { src: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80", alt: "Beauty Salon Interior", label: "Our Studio", order: 5 },
   { src: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&q=80", alt: "Makeup Products", label: "Premium Products", order: 6 },
   { src: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&q=80", alt: "Engagement Makeup", label: "Engagement Look", order: 7 },
-  { src: "https://images.unsplash.com/photo-1501699149874-a524e6a0a030?w=600&q=80", alt: "Mehndi Function Look", label: "Mehndi Look", order: 8 },
+  { src: "https://images.unsplash.com/photo-1595868846927-463d11b22295?w=600&q=80", alt: "Mehndi Function Look", label: "Mehndi Look", order: 8 },
   { src: "https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?w=600&q=80", alt: "Traditional Bridal", label: "Traditional Bridal", order: 9 },
 ];
 

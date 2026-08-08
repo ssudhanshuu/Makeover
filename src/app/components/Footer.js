@@ -13,7 +13,7 @@ const quickLinks = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: "#1a0b10" }} className="text-white mt-10">
+    <footer style={{ background: "var(--bg-white)" }} className="text-[var(--text)] mt-10">
       <div className="container py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* About */}
@@ -32,19 +32,19 @@ export default function Footer() {
                 >
                   Ruchi Makeover
                 </div>
-                <div className="text-xs" style={{ color: "#9ca3af" }}>
+                <div className="text-xs" style={{ color: "var(--text-light)" }}>
                   Find your beauty
                 </div>
               </div>
             </div>
-            <p className="text-sm leading-relaxed mb-5" style={{ color: "#9ca3af" }}>
+            <p className="text-sm leading-relaxed mb-5" style={{ color: "var(--text-light)" }}>
               Premium bridal makeup, skincare, lehenga &amp; jewelry rentals in
               Moradabad. Crafting beautiful memories since 2016.
             </p>
-            <div className="space-y-2 text-sm" style={{ color: "#9ca3af" }}>
+            <div className="space-y-2 text-sm" style={{ color: "var(--text-light)" }}>
               <div className="flex items-center gap-2">
                 <Phone size={14} style={{ color: "#f9a8d4" }} />
-                <a href="tel:+917300685744" className="hover:text-white transition-colors">
+                <a href="tel:+917300685744" className="hover:text-[var(--text)] transition-colors">
                   +91 7300685744
                 </a>
               </div>
@@ -72,8 +72,8 @@ export default function Footer() {
                 <li key={l.label}>
                   <a
                     href={l.href}
-                    className="text-sm transition-colors hover:text-white"
-                    style={{ color: "#9ca3af" }}
+                    className="text-sm transition-colors hover:text-[var(--text)]"
+                    style={{ color: "var(--text-light)" }}
                     onClick={(e) => {
                       e.preventDefault();
                       const el = document.querySelector(l.href);
@@ -160,7 +160,7 @@ export default function Footer() {
                 borderColor: "rgba(190,24,93,0.2)",
               }}
             >
-              <p className="text-sm font-semibold mb-3 text-white">
+              <p className="text-sm font-semibold mb-3 text-[var(--text)]">
                 Ready for your transformation? ✨
               </p>
               <a
@@ -180,7 +180,7 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}>
-        <div className="container py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs" style={{ color: "#6b7280" }}>
+        <div className="container py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs" style={{ color: "var(--text-muted)" }}>
           <p>&copy; {new Date().getFullYear()} Ruchi Makeover. All rights reserved.</p>
           <p>Made with ❤️ in Moradabad, UP</p>
         </div>

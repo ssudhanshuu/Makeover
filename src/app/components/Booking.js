@@ -168,7 +168,7 @@ export default function Booking() {
               initial={{ opacity: 0, scale: 0.88 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="bg-white rounded-3xl p-12 text-center shadow-xl border"
+              className="bg-[var(--bg-white)] rounded-3xl p-12 text-center shadow-xl border"
               style={{ borderColor: "var(--border)" }}
             >
               <div
@@ -206,7 +206,7 @@ export default function Booking() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
               onSubmit={handleSubmit}
-              className="bg-white rounded-3xl p-8 md:p-12 shadow-xl border"
+              className="bg-[var(--bg-white)] rounded-3xl p-8 md:p-12 shadow-xl border"
               style={{ borderColor: "var(--border)" }}
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

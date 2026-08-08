@@ -21,43 +21,42 @@ export default function Header() {
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleNavigation = (href) => {
     setMobileOpen(false);
-
     const section = document.querySelector(href);
-
     if (section) {
-      section.scrollIntoView({
-        behavior: "smooth",
-      });
+      section.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-lg shadow-lg py-3" : "bg-transparent py-5"}`}
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? "py-3 shadow-lg" : "bg-transparent py-6"}`}
+      style={{
+        background: scrolled ? "rgba(13, 13, 13, 0.85)" : "transparent",
+        backdropFilter: scrolled ? "blur(12px)" : "none",
+        borderBottom: scrolled ? "1px solid rgba(212, 175, 55, 0.15)" : "1px solid transparent"
+      }}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-8">
         {/* Logo */}
         <button
           onClick={() => handleNavigation("#home")}
-          className="flex items-center gap-3"
+          className="flex items-center gap-3 group"
         >
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl from-pink-600 to-rose-700 shadow-lg">
-            <Sparkles size={20} className="text-white" />
+          <div className="flex h-10 w-10 items-center justify-center border border-[#d4af37] transition-all duration-500 group-hover:rotate-180" style={{ borderRadius: "2px" }}>
+            <Sparkles size={18} color="#d4af37" />
           </div>
 
           <div className="text-left">
-            <h2 className="font-serif text-2xl font-bold text-pink-700">
-              Ruchi Makeover
+            <h2 className="font-playfair text-2xl tracking-wide" style={{ color: "var(--text)" }}>
+              RUCHI
             </h2>
-
-            <p className="text-xs text-gray-500">
-              Find your beauty
+            <p className="text-[10px] tracking-[0.2em] uppercase" style={{ color: "var(--primary)" }}>
+              Luxury Makeovers
             </p>
           </div>
         </button>
@@ -68,17 +67,18 @@ export default function Header() {
             <button
               key={item.href}
               onClick={() => handleNavigation(item.href)}
-              className="group relative text-[15px] font-medium text-gray-700 transition-all duration-300 hover:text-pink-600"
+              className="group relative text-sm tracking-widest uppercase transition-all duration-300 hover:text-[#d4af37]"
+              style={{ color: "var(--text-light)" }}
             >
               {item.label}
-
-              <span className="absolute -bottom-1 left-0  w-0 bg-pink-600 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-[#d4af37] transition-all duration-500 group-hover:w-full"></span>
             </button>
           ))}
 
           <button
             onClick={() => handleNavigation("#booking")}
-            className="rounded-full bg-pink-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-pink-700 hover:shadow-xl"
+            className="btn-outline ml-4"
+            style={{ padding: "10px 24px", fontSize: "0.8rem" }}
           >
             Book Now
           </button>
@@ -87,7 +87,8 @@ export default function Header() {
         {/* Mobile Toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="rounded-lg p-2 text-pink-700 transition hover:bg-pink-100 lg:hidden"
+          className="p-2 transition lg:hidden"
+          style={{ color: "var(--primary)" }}
         >
           {mobileOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -95,28 +96,29 @@ export default function Header() {
 
       {/* Mobile Menu */}
       <div
-        className={`overflow-hidden transition-all duration-300 lg:hidden ${mobileOpen ? "max-h-[500px]" : "max-h-0"
-          }`}
+        className={`overflow-hidden transition-all duration-500 lg:hidden ${mobileOpen ? "max-h-[500px] border-b" : "max-h-0"}`}
+        style={{ 
+          background: "var(--bg-white)",
+          borderColor: "var(--border)"
+        }}
       >
-        <div className="mx-5 mt-4 rounded-2xl bg-white p-5 shadow-2xl">
-          <div className="flex flex-col gap-2">
-            {navLinks.map((item) => (
-              <button
-                key={item.href}
-                onClick={() => handleNavigation(item.href)}
-                className="rounded-xl px-4 py-3 text-left text-gray-700 transition-all duration-300 hover:bg-pink-50 hover:text-pink-600"
-              >
-                {item.label}
-              </button>
-            ))}
-
+        <div className="px-6 py-6 flex flex-col gap-4">
+          {navLinks.map((item) => (
             <button
-              onClick={() => handleNavigation("#booking")}
-              className="mt-3 rounded-xl bg-pink-600 py-3 font-semibold text-white transition-all duration-300 hover:bg-pink-700"
+              key={item.href}
+              onClick={() => handleNavigation(item.href)}
+              className="text-left text-sm tracking-widest uppercase py-2 border-b transition-colors"
+              style={{ color: "var(--text)", borderColor: "var(--border)" }}
             >
-              Book Appointment
+              {item.label}
             </button>
-          </div>
+          ))}
+          <button
+            onClick={() => handleNavigation("#booking")}
+            className="btn-primary mt-4 w-full justify-center"
+          >
+            Book Appointment
+          </button>
         </div>
       </div>
     </header>

@@ -15,8 +15,8 @@ export default function WhatsAppButton() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 8 }}
             transition={{ duration: 0.2 }}
-            className="bg-white text-gray-800 text-xs font-semibold px-3 py-2 rounded-xl shadow-lg border"
-            style={{ borderColor: "#e5e7eb", whiteSpace: "nowrap" }}
+            className="bg-[var(--bg-white)] text-[var(--text)] text-xs font-semibold px-3 py-2 rounded-xl shadow-lg border border-[var(--border)]"
+            style={{ borderColor: "var(--border)", whiteSpace: "nowrap" }}
           >
             💬 Chat on WhatsApp
           </motion.div>

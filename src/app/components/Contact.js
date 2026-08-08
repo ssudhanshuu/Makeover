@@ -96,7 +96,7 @@ export default function Contact() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="flex items-start gap-4 p-5 bg-white rounded-2xl border shadow-sm"
+                className="flex items-start gap-4 p-5 bg-[var(--bg-white)] rounded-2xl border shadow-sm"
                 style={{ borderColor: "var(--border)" }}
               >
                 <div
@@ -144,7 +144,7 @@ export default function Contact() {
           >
             {submitted ? (
               <div
-                className="bg-white rounded-3xl p-10 text-center shadow-xl border h-full flex flex-col items-center justify-center"
+                className="bg-[var(--bg-white)] rounded-3xl p-10 text-center shadow-xl border h-full flex flex-col items-center justify-center"
                 style={{ borderColor: "var(--border)" }}
               >
                 <div
@@ -169,7 +169,7 @@ export default function Contact() {
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="bg-white rounded-3xl p-8 shadow-xl border"
+                className="bg-[var(--bg-white)] rounded-3xl p-8 shadow-xl border"
                 style={{ borderColor: "var(--border)" }}
               >
                 <h3
