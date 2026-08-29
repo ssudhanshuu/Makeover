@@ -248,7 +248,8 @@ export default function Services() {
           transition={{ duration: 0.5, delay: 0.2 }}
           role="tablist"
           aria-label="Service categories"
-          className="mb-6 flex flex-wrap justify-center gap-3.5"
+          className="mb-8 flex overflow-x-auto pb-4 snap-x snap-mandatory gap-3 sm:flex-wrap sm:justify-center hide-scrollbar"
+          style={{ scrollBehavior: "smooth" }}
         >
           {tabs.map((tab) => (
             <button
@@ -256,7 +257,7 @@ export default function Services() {
               role="tab"
               aria-selected={activeTab === tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex items-center gap-2.5 border rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300 ${activeTab === tab
+              className={`snap-center flex-shrink-0 flex items-center gap-2.5 border rounded-full px-5 py-3 sm:px-6 sm:py-3.5 text-sm font-semibold transition-all duration-300 ${activeTab === tab
                 ? "tab-active scale-105 shadow-md"
                 : "border-[var(--border)] bg-[var(--bg-white)] hover:border-[var(--primary)] hover:bg-[var(--bg)]"
                 }`}
