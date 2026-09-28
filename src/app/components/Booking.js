@@ -128,16 +128,30 @@ export default function Booking() {
     if (errors[name]) setErrors((p) => ({ ...p, [name]: "" }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const e2 = validate();
     if (Object.keys(e2).length) return setErrors(e2);
     setLoading(true);
-    setTimeout(() => {
+    
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...form, type: "Booking" }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+        setForm(INITIAL);
+      }
+    } catch (error) {
+      console.error("Failed to submit booking", error);
+    } finally {
       setLoading(false);
-      setSubmitted(true);
-      setForm(INITIAL);
-    }, 1200);
+    }
   };
 
   return (

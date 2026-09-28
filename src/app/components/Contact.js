@@ -17,10 +17,24 @@ export default function Contact() {
   const handleChange = (e) =>
     setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name.trim() || !form.phone.trim()) return;
-    setTimeout(() => setSubmitted(true), 800);
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...form, type: "Contact" }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+      }
+    } catch (error) {
+      console.error("Failed to submit contact form", error);
+    }
   };
 
   return (

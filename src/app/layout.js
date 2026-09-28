@@ -1,6 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"),
   title: "Ruchi Makeover | Beauty Parlor in Moradabad",
   description:
     "Professional bridal makeup, skin care, lehenga & jewelry rental in Moradabad. Book your appointment today!",
