@@ -9,7 +9,7 @@ import {
   Send,
   CheckCircle,
 } from "lucide-react";
-
+import { FaInstagram } from "react-icons/fa";
 export default function Contact() {
   const [form, setForm] = useState({ name: "", phone: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
@@ -83,7 +83,7 @@ export default function Contact() {
                 ),
               },
               {
-                icon: <ExternalLink size={20} />,
+                icon: <FaInstagram size={20} />,
                 title: "Instagram",
                 content: (
                   <a

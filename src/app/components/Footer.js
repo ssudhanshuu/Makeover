@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Sparkles, Phone, MapPin, Clock, ExternalLink } from "lucide-react";
+import { FaInstagram } from "react-icons/fa";
 
 const quickLinks = [
   { label: "Home", href: "#home" },
@@ -105,14 +106,14 @@ export default function Footer() {
                 className="w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:-translate-y-1"
                 style={{ background: "rgba(255,255,255,0.08)" }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.background =
-                    "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)")
+                (e.currentTarget.style.background =
+                  "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)")
                 }
                 onMouseLeave={(e) =>
                   (e.currentTarget.style.background = "rgba(255,255,255,0.08)")
                 }
               >
-                <ExternalLink size={18} color="white" />
+                <FaInstagram size={18} color="white" />
               </a>
               {/* WhatsApp */}
               <a
