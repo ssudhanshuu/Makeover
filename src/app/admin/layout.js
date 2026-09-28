@@ -43,7 +43,7 @@ export default function AdminLayout({ children }) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0f111a] text-slate-300 flex font-sans">
+    <div className="min-h-screen bg-[#0f111a] text-slate-300 font-sans">
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <div 
@@ -52,8 +52,8 @@ export default function AdminLayout({ children }) {
         />
       )}
 
-      {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#1a1d27] border-r border-[#2a2e3f] transform transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      {/* Sidebar — fixed on all screens */}
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#1a1d27] border-r border-[#2a2e3f] transform transition-transform duration-300 lg:translate-x-0 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="h-20 flex items-center justify-between px-6 border-b border-[#2a2e3f]">
           <Link href="/admin" className="flex items-center gap-2 text-xl font-black text-white font-playfair tracking-tight">
             <Sparkles size={22} className="text-blue-400" />
@@ -64,7 +64,7 @@ export default function AdminLayout({ children }) {
           </button>
         </div>
 
-        <div className="p-4 flex flex-col h-[calc(100vh-80px)]">
+        <div className="p-4 flex flex-col h-[calc(100vh-80px)] overflow-y-auto">
           <nav className="flex-1 space-y-1.5">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
@@ -106,10 +106,10 @@ export default function AdminLayout({ children }) {
         </div>
       </aside>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Mobile Header */}
-        <header className="lg:hidden h-16 bg-[#1a1d27] border-b border-[#2a2e3f] flex items-center px-4">
+      {/* Main Content — offset by sidebar width on desktop */}
+      <div className="lg:ml-64 flex flex-col h-screen overflow-hidden">
+        {/* Mobile Header — sticky at top */}
+        <header className="lg:hidden shrink-0 h-16 bg-[#1a1d27]/95 backdrop-blur-md border-b border-[#2a2e3f] flex items-center px-4 z-30">
           <button 
             onClick={() => setMobileMenuOpen(true)}
             className="p-2 -ml-2 text-slate-400 hover:bg-[#252b3b] rounded-lg"
@@ -119,7 +119,7 @@ export default function AdminLayout({ children }) {
           <span className="ml-2 font-bold font-playfair text-white">Ruchi Makeover Admin</span>
         </header>
 
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-hidden">
           {children}
         </main>
       </div>

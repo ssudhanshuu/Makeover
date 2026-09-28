@@ -96,26 +96,35 @@ export default function AdminCourses() {
     return <div className="p-10 text-center"><Loader2 className="animate-spin inline text-blue-500" /></div>;
   }
 
-    <div className="p-6 max-w-7xl mx-auto flex flex-col font-sans">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-2xl font-black text-white tracking-tight font-playfair">Manage Courses</h1>
-          <p className="text-slate-400 mt-1">Add, edit, or remove training courses.</p>
+  return (
+    <div className="flex flex-col h-[calc(100vh-64px)] lg:h-screen font-sans">
+      {/* ── Fixed Top Section ── */}
+      <div className="shrink-0 bg-[#0f111a] px-4 pt-4 pb-0">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-center mb-3">
+            <div>
+              <h1 className="text-xl font-black text-white tracking-tight font-playfair">Manage Courses</h1>
+              <p className="text-slate-400 text-sm mt-0.5">Add, edit, or remove training courses.</p>
+            </div>
+            <button onClick={handleOpenAdd} className="bg-blue-600 text-white px-4 py-2 text-xs font-bold rounded-lg flex items-center gap-1.5 hover:bg-blue-700 shadow-md shadow-blue-500/20">
+              <Plus size={16} /> Add Course
+            </button>
+          </div>
         </div>
-        <button onClick={handleOpenAdd} className="bg-blue-600 text-white px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-blue-700 shadow-md shadow-blue-500/20">
-          <Plus size={18} /> Add Course
-        </button>
       </div>
 
-      <div className="bg-[#1a1d27] rounded-2xl border border-[#2a2e3f] shadow-sm overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-[#252b3b] border-b border-[#2a2e3f] text-xs text-slate-400 uppercase font-bold">
-            <tr>
-              <th className="p-4">Course Details</th>
-              <th className="p-4">Duration & Price</th>
-              <th className="p-4">Status</th>
-              <th className="p-4 text-right">Actions</th>
-            </tr>
+      {/* ── Scrollable Table Section ── */}
+      <div className="flex-1 overflow-y-auto px-4 pb-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-[#1a1d27] rounded-2xl border border-[#2a2e3f] shadow-sm overflow-hidden">
+            <table className="w-full text-left">
+              <thead className="bg-[#252b3b] border-b border-[#2a2e3f] text-xs text-slate-400 uppercase font-bold sticky top-0 z-10">
+                <tr>
+                  <th className="p-4">Course Details</th>
+                  <th className="p-4">Duration & Price</th>
+                  <th className="p-4">Status</th>
+                  <th className="p-4 text-right">Actions</th>
+                </tr>
           </thead>
           <tbody className="divide-y divide-[#2a2e3f]">
             {courses.map(course => (
@@ -148,6 +157,8 @@ export default function AdminCourses() {
             ))}
           </tbody>
         </table>
+      </div>
+        </div>
       </div>
 
       {isModalOpen && (
